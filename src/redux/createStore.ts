@@ -13,6 +13,7 @@ import { Reducer } from './types/reducers'
 import ActionTypes from './utils/actionTypes'
 import isPlainObject from './utils/isPlainObject'
 
+const log = console.log
 /**
  * Creates a Redux store that holds the state tree.
  * The only way to change the data in the store is to call `dispatch()` on it.
@@ -21,6 +22,7 @@ import isPlainObject from './utils/isPlainObject'
  * parts of the state tree respond to actions, you may combine several reducers
  * into a single reducer function by using `combineReducers`.
  *
+ * createStore 的参数
  * @param reducer A function that returns the next state tree, given
  * the current state tree and the action to handle.
  *
@@ -47,6 +49,7 @@ export default function createStore<
   reducer: Reducer<S, A>,
   enhancer?: StoreEnhancer<Ext, StateExt>
 ): Store<ExtendState<S, StateExt>, A, StateExt, Ext> & Ext
+
 export default function createStore<
   S,
   A extends Action,
@@ -57,6 +60,7 @@ export default function createStore<
   preloadedState?: PreloadedState<S>,
   enhancer?: StoreEnhancer<Ext, StateExt>
 ): Store<ExtendState<S, StateExt>, A, StateExt, Ext> & Ext
+
 export default function createStore<
   S,
   A extends Action,
@@ -97,6 +101,7 @@ export default function createStore<
     throw new Error('Expected the reducer to be a function.')
   }
 
+  // 初始化参数
   let currentReducer = reducer
   let currentState = preloadedState as S
   let currentListeners: (() => void)[] | null = []
@@ -111,6 +116,7 @@ export default function createStore<
    * subscribe/unsubscribe in the middle of a dispatch.
    */
   function ensureCanMutateNextListeners() {
+    log('redux ensureCanMutateNextListeners', nextListeners, currentListeners)
     if (nextListeners === currentListeners) {
       nextListeners = currentListeners.slice()
     }
@@ -170,9 +176,12 @@ export default function createStore<
       )
     }
 
+    console.log('redux subscribe')
+
     let isSubscribed = true
 
     ensureCanMutateNextListeners()
+    // subscribe 的核心逻辑就是这一句
     nextListeners.push(listener)
 
     return function unsubscribe() {
@@ -240,13 +249,16 @@ export default function createStore<
       throw new Error('Reducers may not dispatch actions.')
     }
 
+    log('redux dispatch', action)
     try {
       isDispatching = true
+      // 生成新状态
       currentState = currentReducer(currentState, action)
     } finally {
       isDispatching = false
     }
 
+    // 调用所有 listen
     const listeners = (currentListeners = nextListeners)
     for (let i = 0; i < listeners.length; i++) {
       const listener = listeners[i]
@@ -334,6 +346,7 @@ export default function createStore<
     }
   }
 
+  // 派发初始化事件, 从 reducer 生成初始状态
   // When a store is created, an "INIT" action is dispatched so that every
   // reducer returns their initial state. This effectively populates
   // the initial state tree.
