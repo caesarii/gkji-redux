@@ -1,7 +1,7 @@
 
 const log = console.log
 
-export function createStore (reducer) {
+export function createStore (reducer, preloadedState) {
 
     let currentReducer = reducer
     let currentState = preloadedState 
@@ -34,7 +34,7 @@ export function createStore (reducer) {
     }
 
     function dispatch(action) {
-        log('dispatch', bindActionCreators)
+        log('dispatch', action)
         // 生成新状态
         currentState = currentReducer(currentState, action)
 
@@ -49,14 +49,12 @@ export function createStore (reducer) {
 
     // 派发初始化事件, 从 reducer 生成初始状态
   
-    dispatch({ type: ActionTypes.INIT })
+    dispatch({ type: "INIT" })
 
     const store = {
-        dispatch: dispatch,
+        dispatch,
         subscribe,
         getState,
-        replaceReducer,
-        [$$observable]: observable
     }
 
     return store

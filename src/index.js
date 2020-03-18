@@ -6,13 +6,13 @@ import Counter from './components/Counter'
 import counter from './reducers'
 const log = () => {}// console.log
 
-const store = createStore(counter)
-
+const store = createStore(counter, 0)
 const render = () => {
-  console.log('render')
+  const state = store.getState()
+  console.log('render', state)
   return ReactDOM.render(
     <Counter
-      value={store.getState()}
+      value={state}
       onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
       onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
     />,
