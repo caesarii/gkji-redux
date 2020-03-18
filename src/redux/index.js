@@ -1,7 +1,7 @@
 
 const log = console.log
 
-function createStore (reducer) {
+export function createStore (reducer) {
 
     let currentReducer = reducer
     let currentState = preloadedState 
@@ -61,5 +61,3 @@ function createStore (reducer) {
 
     return store
 }
-
-export default createStore

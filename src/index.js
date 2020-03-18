@@ -1,31 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from './redux'
+// import { createStore, applyMiddleware } from './redux'
+import { createStore } from './redux/index.js'
 import Counter from './components/Counter'
 import counter from './reducers'
 const log = () => {}// console.log
 
-// logger 中间件
-const fn1 = store => next => action => {
-  log('fn1 before')
-  next(action)
-  log('fn1 after')
-}
-
-const fn2 = store => next => action => {
-  log('fn2 before')
-  next(action)
-  log('fn2 after')
-}
-
-const fn3 = store => next => action => {
-  log('fn3 before')
-  next(action)
-  log('fn3 after')
-}
-
-
-const store = createStore(counter, applyMiddleware(fn1, fn2, fn3))
+const store = createStore(counter)
 
 const render = () => {
   console.log('render')
