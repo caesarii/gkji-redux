@@ -139,7 +139,7 @@ middlewareDispatch = (action) => {
 最后一个中间件的 middlewareDispatch 就是 store.dispatch
 
 在 dispatch(action) 时实际调用顺序如何, 也就是执行 fn1(fn2(fn3(store.dispatch)))(action), 展开一下
-
+以下内容结合 counter 中的 demo 理解
 ```js
 
 fn1 = next => action => {
@@ -180,11 +180,14 @@ fn1 = next => action => {
     fn3After()
 
     fn2After()
-    
+
     fn1After()
 }
 ```
 
+fn1 就是实际使用的 dispatch. 
+
+完结散花
 
 
 

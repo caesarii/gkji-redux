@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { createStore, applyMiddleware } from './redux'
 import Counter from './components/Counter'
 import counter from './reducers'
-const log = console.log
+const log = () => {}// console.log
 
 // logger 中间件
 const fn1 = store => next => action => {

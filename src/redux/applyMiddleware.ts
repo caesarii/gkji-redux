@@ -72,7 +72,7 @@ export default function applyMiddleware(
       dispatch: (action, ...args) => dispatch(action, ...args)
     }
     const chain = middlewares.map(middleware => middleware(middlewareAPI))
-    console.log('chain', chain)
+    console.log('middleware chain', chain)
     dispatch = compose<typeof dispatch>(...chain)(store.dispatch)
 
     return {

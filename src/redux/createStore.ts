@@ -135,7 +135,7 @@ export default function createStore<
           'Pass it down from the top reducer instead of reading it from the store.'
       )
     }
-
+    log('redux getState', currentState)
     return currentState as S
   }
 
@@ -176,7 +176,7 @@ export default function createStore<
       )
     }
 
-    console.log('redux subscribe')
+    log('redux subscribe', listener.name)
 
     let isSubscribed = true
 
